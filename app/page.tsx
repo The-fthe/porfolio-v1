@@ -5,13 +5,10 @@ import { Contact } from "./components/Contact"
 import { Profile } from "./components/Profile"
 import { Experience } from "./components/Experience"
 import { ProjectCard } from "./components/ProjectCard"
-import { ThemeProvider } from "./theme/ThemeProvider"
-import { ThemeSwitcher } from "./theme/ThemeSwitcher"
 
 export default function Home() {
   return (
-    <ThemeProvider>
-      <div className="app" id="top">
+    <div className="app" id="top">
         {/* ヘッダー */}
         <header className="site-header">
           <div className="container site-header__inner">
@@ -85,8 +82,6 @@ export default function Home() {
           </div>
         </footer>
 
-        <ThemeSwitcher />
-      </div>
-    </ThemeProvider>
+    </div>
   )
 }
