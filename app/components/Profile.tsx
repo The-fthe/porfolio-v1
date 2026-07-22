@@ -2,7 +2,7 @@ export function Profile() {
   return (
     <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
       <img
-        src="/fthe.gif"
+        src={`${import.meta.env.BASE_URL}fthe.gif`}
         alt="ラーム チーシンのプロフィール画像"
         className="avatar"
       />
