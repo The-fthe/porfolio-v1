@@ -978,6 +978,27 @@ main.container {
   box-shadow: 8px 8px 0 #00e5ff;
 }
 
+/* ---------- Shared presentation overrides ---------- */
+:root,
+:root[data-theme] {
+  --bg: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #ffffff;
+  --text: #141414;
+  --muted: #666666;
+  --border: #dddddd;
+  --border-strong: #141414;
+}
+
+:root[data-theme="blueprint"] .app {
+  background-image: none;
+}
+
+.section-head::before {
+  display: none !important;
+  content: none !important;
+}
+
 /* ---------- Motion safety ---------- */
 @media (prefers-reduced-motion: reduce) {
   html {
