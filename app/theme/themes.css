@@ -497,6 +497,8 @@ main.container {
   width: 11rem;
   height: 11rem;
   flex: none;
+  object-fit: cover;
+  image-rendering: pixelated;
   display: grid;
   place-items: center;
   font-family: var(--font-head);

@@ -1,9 +1,11 @@
 export function Profile() {
   return (
     <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-      <div className="avatar" aria-label="ラーム チーシン">
-        CS
-      </div>
+      <img
+        src="/fthe.gif"
+        alt="ラーム チーシンのプロフィール画像"
+        className="avatar"
+      />
       <div className="flex-1">
         <h2 className="section-head">プロフィール</h2>
         <p className="lede">
