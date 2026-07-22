@@ -1,85 +1,143 @@
-import React from "react"
+import { useState } from "react"
+import type { FormEvent } from "react"
 
-export const Contact: React.FC = () => (
-  <div className="max-w-2xl mx-auto p-6">
-    <section className="mb-8">
-      <h2 className="text-3xl font-bold mb-6">お問い合わせ</h2>
-      <div className="flex flex-col items-start gap-6">
-        <div>
-          <div className="flex items-center gap-3 mb-2">
-            <span className="font-semibold text-lg">GitHub:</span>
-            <a
-              href="https://github.com/The-fthe"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-gray-700 hover:text-black transition-colors flex items-center gap-1"
-              aria-label="GitHub"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.154-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.686-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.699 1.028 1.593 1.028 2.686 0 3.847-2.337 4.695-4.566 4.944.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.744 0 .267.18.579.688.481C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span className="underline">The-fthe</span>
-            </a>
+const EMAIL = "lcslianandfthe.cs@gmail.com"
+
+const SOCIALS = [
+  {
+    label: "GitHub",
+    href: "https://github.com/The-fthe",
+    path: "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/chee-seng-lam-5515081a4/",
+    path: "M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z",
+  },
+  {
+    label: "X",
+    href: "https://x.com/fthe_cheese",
+    path: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z",
+  },
+]
+
+type Status = "idle" | "sending" | "ok" | "error"
+
+/**
+ * お問い合わせ（spec.md F5 / ADR-0008）:
+ * 名前・メール・本文＋honeypot → POST {VITE_API_BASE_URL}/contact。
+ * API 未デプロイ時（env 未設定）は mailto にフォールバック。
+ */
+export function Contact() {
+  const [status, setStatus] = useState<Status>("idle")
+
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const form = e.currentTarget
+    const data = new FormData(form)
+    const name = String(data.get("name") ?? "").trim()
+    const email = String(data.get("email") ?? "").trim()
+    const message = String(data.get("message") ?? "").trim()
+    const website = String(data.get("website") ?? "") // honeypot
+
+    const apiBase = import.meta.env.VITE_API_BASE_URL as string | undefined
+    if (!apiBase) {
+      // backend 未接続 → メーラー起動で代替
+      const subject = encodeURIComponent(`ポートフォリオ経由: ${name}`)
+      const body = encodeURIComponent(`${message}\n\n-- \n${name}\n${email}`)
+      window.location.href = `mailto:${EMAIL}?subject=${subject}&body=${body}`
+      return
+    }
+
+    setStatus("sending")
+    try {
+      const res = await fetch(`${apiBase}/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message, website }),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      setStatus("ok")
+      form.reset()
+    } catch {
+      setStatus("error")
+    }
+  }
+
+  return (
+    <div className="contact-hero">
+      <span className="status">
+        <span className="status-dot" aria-hidden="true" />
+        新しい機会に前向きです
+      </span>
+
+      <h2 className="section-head">お問い合わせ</h2>
+      <p className="contact-lead">
+        お仕事のご依頼、プロジェクトのご相談、その他ご質問など、
+        お気軽にご連絡ください。
+      </p>
+
+      <div className="contact-body">
+        <form className="contact-form" onSubmit={handleSubmit}>
+          <div className="contact-form__row">
+            <label>
+              名前
+              <input name="name" type="text" required autoComplete="name" />
+            </label>
+            <label>
+              メール
+              <input name="email" type="email" required autoComplete="email" />
+            </label>
           </div>
-          <div className="flex items-center gap-3 mb-2">
-            <span className="font-semibold text-lg">LinkedIn:</span>
-            <a
-              href="https://www.linkedin.com/in/chee-seng-lam-5515081a4/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-blue-700 hover:text-blue-900 transition-colors flex items-center gap-1"
-              aria-label="LinkedIn"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="currentColor"
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-              >
-                <path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-9h3v9zm-1.5-10.28c-.97 0-1.75-.79-1.75-1.75s.78-1.75 1.75-1.75 1.75.79 1.75 1.75-.78 1.75-1.75 1.75zm13.5 10.28h-3v-4.5c0-1.08-.02-2.47-1.5-2.47-1.5 0-1.73 1.17-1.73 2.39v4.58h-3v-9h2.89v1.23h.04c.4-.75 1.38-1.54 2.84-1.54 3.04 0 3.6 2 3.6 4.59v4.72z" />
-              </svg>
-              <span className="underline">chee-seng-lam-5515081a4</span>
-            </a>
+          <label>
+            本文
+            <textarea name="message" rows={5} required />
+          </label>
+
+          {/* honeypot: 人間には見えない。bot が埋めたら backend で弾く */}
+          <label className="hp-field" aria-hidden="true">
+            Website
+            <input name="website" type="text" tabIndex={-1} autoComplete="off" />
+          </label>
+
+          <div className="contact-form__actions">
+            <button type="submit" className="btn" disabled={status === "sending"}>
+              {status === "sending" ? "送信中…" : "送信する"}
+            </button>
+            {status === "ok" && (
+              <span className="contact-form__note">送信しました。ありがとうございます！</span>
+            )}
+            {status === "error" && (
+              <span className="contact-form__note contact-form__note--error">
+                送信に失敗しました。
+                <a href={`mailto:${EMAIL}`}>{EMAIL}</a> へ直接ご連絡ください。
+              </span>
+            )}
           </div>
-          <div className="flex items-center gap-3">
-            <span className="font-semibold text-lg">Email:</span>
-            <a
-              href="mailto:lcslianandfthe.cs@gmail.com"
-              className="text-gray-700 hover:underline flex items-center gap-1"
-            >
-              <svg
-                className="w-6 h-6 text-gray-600"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth={2}
-                viewBox="0 0 24 24"
-              >
-                <path
-                  d="M16 12c0-2.21-1.79-4-4-4s-4 1.79-4 4 1.79 4 4 4 4-1.79 4-4z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <path
-                  d="M2 12c0 5.523 4.477 10 10 10s10-4.477 10-10S17.523 2 12 2 2 6.477 2 12z"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span>lcslianandfthe.cs@gmail.com</span>
-            </a>
-          </div>
-        </div>
+        </form>
+
+        <aside className="contact-socials">
+          <span className="contact-socials__label">SNS</span>
+          <ul className="social-icons">
+            {SOCIALS.map((s) => (
+              <li key={s.label}>
+                <a
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  title={s.label}
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d={s.path} />
+                  </svg>
+                  <span className="social-icons__label">{s.label}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </aside>
       </div>
-    </section>
-  </div>
-)
-
+    </div>
+  )
+}

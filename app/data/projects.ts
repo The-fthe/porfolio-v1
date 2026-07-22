@@ -2,22 +2,26 @@ import type { Project } from "../types/project";
 
 export const projects: Project[] = [
   {
-    title: "あそびタッチ - 子供ゲームで赤ちゃん～子供のお勉強 知育アプリ",
+    title: "壁ドン彼氏 〜真夏のチャラ男〜（Switch）",
     description:
-      "Unityを用いたiOS/Android向け知育アプリ。ミニゲーム管理システムや課金、広告、分析など幅広い機能を担当。",
+      "自社開発のNintendo Switch向けビジュアルノベル。クライアント実装を担当。",
     highlights: [
-      "ミニゲーム管理システム実装",
-      "SpriteAtlas実装",
-      "Android/iOS課金実装",
-      "Firebase/Analytic実装",
-      "Admob Mediation実装",
-      "レビューAPI実装",
-      "Dotweenでアニメーション実装",
-      "ビルド最適化",
-      "コード標準化・共通ライブラリ導入で移植時間短縮",
-      "イベント導入で依存関係軽減・拡張性向上"
+      "ビジュアルノベルツール機能追加",
+      "AssetBundle導入",
+      "スクリーンショット機能追加",
     ],
-    technologies: ["Unity", "C#", "Firebase", "Admob", "Dotween"],
+    technologies: ["Unity", "C#", "AssetBundle"],
+    image: "/works/kabedon.webp",
+    link: "https://store-jp.nintendo.com/item/software/D70010000062865",
+    platform: "switch",
+  },
+  {
+    title: "Military2D（自主制作）",
+    description: "個人開発の2Dゲーム。itch.io で公開中。",
+    highlights: [],
+    technologies: ["Unity", "C#"],
+    image: "/works/military2d.webp",
+    link: "https://fthe.itch.io/military2d",
+    platform: "itch",
   },
 ]
-

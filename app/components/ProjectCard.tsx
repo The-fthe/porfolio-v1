@@ -1,57 +1,50 @@
+import { useState } from "react"
 import type { Project } from "../types/project"
+import { SwitchIcon, ItchIcon } from "./BrandIcons"
 
 type ProjectCardProps = {
   project: Project
 }
 
+const LINK = {
+  switch: { label: "Switchで見る", Icon: SwitchIcon },
+  itch: { label: "itch.ioで見る", Icon: ItchIcon },
+} as const
+
 export function ProjectCard({ project }: ProjectCardProps) {
+  const [imgOk, setImgOk] = useState(true)
+  const cta = project.platform ? LINK[project.platform] : null
+
   return (
-    <div className="bg-white rounded-lg overflow-hidden shadow-lg border hover:shadow-xl transition-shadow duration-300">
-      <div className="relative h-64 w-full">
-        <img
-          src={project.image || "/placeholder.jpg"}
-          alt={project.title}
-          className="w-full h-full object-cover"
-        />
+    <div className="card">
+      <div className="card__media">
+        {project.image && imgOk ? (
+          <img
+            src={project.image}
+            alt={`${project.title} のスクリーンショット`}
+            className="card__img"
+            onError={() => setImgOk(false)}
+          />
+        ) : (
+          project.technologies[0] ?? project.title
+        )}
       </div>
-      <div className="p-6">
-        <h3 className="text-xl font-bold mb-2">{project.title}</h3>
-        <p className="text-gray-600 mb-4">{project.description}</p>
-
-        <div className="mb-4">
-          <h4 className="font-semibold mb-2">主な成果:</h4>
-          <ul className="list-disc pl-5 space-y-1">
-            {project.highlights.map((highlight, index) => (
-              <li key={index} className="text-gray-700">
-                {highlight}
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="flex flex-wrap gap-2 mb-4">
-          {project.technologies.map((tech, index) => (
-            <span
-              key={index}
-              className="px-3 py-1 bg-gray-100 rounded-full text-sm"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
+      <div className="card__body">
+        <h3 className="card__title">{project.title}</h3>
+        <p className="card__description muted">{project.description}</p>
 
         {project.link && (
           <a
             href={project.link}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 transition-colors"
+            className="card__cta btn btn--icon"
           >
-            詳細を見る
+            {cta && <cta.Icon className="btn__logo" />}
+            {cta ? cta.label : "詳細を見る"}
           </a>
         )}
       </div>
     </div>
   )
 }
-

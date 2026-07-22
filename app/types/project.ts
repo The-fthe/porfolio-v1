@@ -5,5 +5,7 @@ export type Project = {
   highlights: string[]
   technologies: string[]
   link?: string
+  /** リンクボタンの種別。ロゴとラベルを切り替える */
+  platform?: "switch" | "itch"
 }
 
