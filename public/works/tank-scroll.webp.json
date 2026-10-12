@@ -1,0 +1,5 @@
+{
+  "source": "Military2D Unity project: ACS_Base.png and ACS_Tower.png",
+  "preparation": "Composited the existing vehicle sprites into one transparent image; no generated artwork.",
+  "runtime": "tank-body.webp and tank-turret.webp retain separate layers for pointer aiming. Combined image is a static reference."
+}

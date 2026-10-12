@@ -1,0 +1,14 @@
+{
+  "width": 160,
+  "height": 97,
+  "hubX": 75,
+  "hubY": 49,
+  "source": "Player.prefab",
+  "legs": 3,
+  "crop": {
+    "left": 60,
+    "top": 147,
+    "width": 503,
+    "height": 304
+  }
+}

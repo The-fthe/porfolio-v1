@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>サイトのプライバシー | ランキ</title>
+    <meta name="description" content="ランキのポートフォリオにおけるデータの取扱いと外部通信について説明します。" />
+    <style>
+      :root { color-scheme: light; font-family: system-ui, sans-serif; color: #172033; background: #f6f7fb; }
+      body { margin: 0; }
+      main { box-sizing: border-box; width: min(820px, 100%); margin: auto; padding: 48px 20px 80px; }
+      h1, h2 { line-height: 1.35; }
+      section { margin: 28px 0; padding: 24px; border: 1px solid #d8deea; border-radius: 12px; background: white; }
+      li { margin: 10px 0; }
+      a { color: #075dcc; }
+      .links { display: flex; flex-wrap: wrap; gap: 16px; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p><a href="../../">ポートフォリオへ戻る</a></p>
+      <h1>サイトのプライバシー</h1>
+      <p>このページは、ポートフォリオ本体とMilitary2D紹介ページにおけるデータの取扱いを説明します。最終更新日：2026年8月24日</p>
+
+      <section>
+        <h2>入力内容と保存</h2>
+        <ul>
+          <li>このサイトには入力ファイルの選択欄やファイルアップロード機能はありません。</li>
+          <li>お問い合わせフォームのボタンは、端末のメールソフトを<code>mailto:</code>で開きます。名前、メールアドレス、本文はこのサイトのサーバーへ送信・保存されません。</li>
+          <li>実際にメールを送信した後の取扱いは、利用者と受信者が使用するメールサービスに従います。</li>
+          <li>このサイト独自のCookie、localStorage、IndexedDBによる利用者データの永続保存は行いません。画面復旧のため、使用フレームワークが一時的なsessionStorageを使う場合があります。</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>外部サービスへの通信</h2>
+        <ul>
+          <li><strong>boot.dev</strong>：プロフィール画面で学習実績のサムネイルを <code>api.boot.dev</code> から読み込みます。画像提供先にはIPアドレス、ブラウザ情報、参照元など通常のWebリクエスト情報が送られる場合があります。画像を取得できない場合は文字リンクを表示します。</li>
+          <li><strong>YouTube</strong>：Military2D画面で動画サムネイルを <code>i.ytimg.com</code> から読み込みます。画像提供先には通常のWebリクエスト情報が送られる場合があります。動画リンクを開いた後はYouTubeの規約とプライバシーポリシーが適用されます。</li>
+          <li>GitHub、LinkedIn、X、Qiita、Google Play、itch.ioなどの外部リンクは、利用者が選択したときに各サービスへ移動します。</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>解析・広告・ホスティング</h2>
+        <p>サイト独自のアクセス解析、広告、行動追跡は設置していません。公開先のホスティング事業者は、セキュリティや運用のためIPアドレス、日時、要求URLなどの標準的なアクセスログを処理する場合があります。</p>
+      </section>
+
+      <section>
+        <h2>お問い合わせ</h2>
+        <p><a href="mailto:the.fthe.job@gmail.com">the.fthe.job@gmail.com</a></p>
+        <div class="links"><a href="../third-party/">第三者ライセンス</a><a href="../../">ポートフォリオへ戻る</a></div>
+      </section>
+    </main>
+  </body>
+</html>

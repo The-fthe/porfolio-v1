@@ -1,0 +1,6 @@
+{
+  "name": "portfolio-showcase-prototype",
+  "private": true,
+  "type": "module",
+  "scripts": { "preview": "node serve.mjs" }
+}
