@@ -3,3 +3,5 @@ Disallow: /porfolio-v1/sakaku/policy/
 Disallow: /sakaku/policy/
 Disallow: /porfolio-v1/machi-keiei/policy/
 Disallow: /machi-keiei/policy/
+Disallow: /porfolio-v1/maze-defense/policy/
+Disallow: /maze-defense/policy/
